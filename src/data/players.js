@@ -1,0 +1,22 @@
+export const players = [
+  { id: 1, nombre: "LeBron James", posicion: "Alero", edad: 39, puntos: 40000, equipo: "Lakers" },
+  { id: 2, nombre: "Stephen Curry", posicion: "Base", edad: 36, puntos: 23000, equipo: "Warriors" },
+  { id: 3, nombre: "Kevin Durant", posicion: "Alero", edad: 35, puntos: 28000, equipo: "Suns" },
+  { id: 4, nombre: "Giannis Antetokounmpo", posicion: "Ala-Pívot", edad: 29, puntos: 18000, equipo: "Bucks" },
+  { id: 5, nombre: "Luka Doncic", posicion: "Base", edad: 25, puntos: 10000, equipo: "Mavericks" },
+  { id: 6, nombre: "Nikola Jokic", posicion: "Pívot", edad: 29, puntos: 14000, equipo: "Nuggets" },
+  { id: 7, nombre: "Joel Embiid", posicion: "Pívot", edad: 30, puntos: 12000, equipo: "76ers" },
+  { id: 8, nombre: "Jayson Tatum", posicion: "Alero", edad: 26, puntos: 11000, equipo: "Celtics" },
+  { id: 9, nombre: "Devin Booker", posicion: "Escolta", edad: 27, puntos: 13000, equipo: "Suns" },
+  { id: 10, nombre: "Damian Lillard", posicion: "Base", edad: 33, puntos: 20000, equipo: "Bucks" },
+  { id: 11, nombre: "Anthony Davis", posicion: "Ala-Pívot", edad: 31, puntos: 17000, equipo: "Lakers" },
+  { id: 12, nombre: "Kawhi Leonard", posicion: "Alero", edad: 32, puntos: 13000, equipo: "Clippers" },
+  { id: 13, nombre: "Jimmy Butler", posicion: "Alero", edad: 34, puntos: 14000, equipo: "Heat" },
+  { id: 14, nombre: "Kyrie Irving", posicion: "Base", edad: 32, puntos: 16000, equipo: "Mavericks" },
+  { id: 15, nombre: "Donovan Mitchell", posicion: "Escolta", edad: 27, puntos: 10000, equipo: "Cavaliers" },
+  { id: 16, nombre: "Trae Young", posicion: "Base", edad: 25, puntos: 9000, equipo: "Hawks" },
+  { id: 17, nombre: "Ja Morant", posicion: "Base", edad: 24, puntos: 6000, equipo: "Grizzlies" },
+  { id: 18, nombre: "Zion Williamson", posicion: "Ala-Pívot", edad: 23, puntos: 5000, equipo: "Pelicans" },
+  { id: 19, nombre: "Bam Adebayo", posicion: "Pívot", edad: 26, puntos: 7000, equipo: "Heat" },
+  { id: 20, nombre: "Jaylen Brown", posicion: "Escolta", edad: 27, puntos: 9000, equipo: "Celtics" }
+];
