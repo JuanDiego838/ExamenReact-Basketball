@@ -5,10 +5,12 @@ import PlayerTable from './components/PlayerTable';
 import Pagination from './components/Pagination';
 import SearchHistory from './components/SearchHistory';
 import StatsPanel from './components/StatsPanel';
+import Modal from './components/Modal';
+import ThemeToggle from './components/ThemeToggle';
 import './index.css';
 
 function App() {
-  // 1. Estados (primero todos los useState)
+  // 1. Estados
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -19,13 +21,22 @@ function App() {
     return JSON.parse(localStorage.getItem('favorites')) || [];
   });
   const [showOnlyFavorites, setShowOnlyFavorites] = useState(false);
+  
   const [darkMode, setDarkMode] = useState(() => {
     return JSON.parse(localStorage.getItem('darkMode')) || false;
   });
 
+  const [searchHistory, setSearchHistory] = useState(() => {
+    return JSON.parse(localStorage.getItem('searchHistory')) || [];
+  });
+
+  // Estado para el Modal
+  const [selectedPlayer, setSelectedPlayer] = useState(null);
+
   const itemsPerPage = 5; 
 
-  // 2. useEffect (efectos secundarios)
+  // 2. Efectos (useEffect)
+  // Debounce para el buscador
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(searchTerm);
@@ -33,14 +44,17 @@ function App() {
     return () => clearTimeout(timer);
   }, [searchTerm]);
 
-  const [searchHistory, setSearchHistory] = useState(() => {
-  return JSON.parse(localStorage.getItem('searchHistory')) || [];
-});
-
+  // Resetear página al buscar o filtrar
   useEffect(() => {
     setCurrentPage(1);
   }, [debouncedSearch, showOnlyFavorites]);
 
+  // Cerrar modal al cambiar de página o filtro
+  useEffect(() => {
+    setSelectedPlayer(null);
+  }, [currentPage, debouncedSearch]);
+
+  // Guardar preferencias en LocalStorage
   useEffect(() => {
     localStorage.setItem('darkMode', JSON.stringify(darkMode));
     document.body.classList.toggle('dark-mode', darkMode);
@@ -50,18 +64,19 @@ function App() {
     localStorage.setItem('favorites', JSON.stringify(favorites));
   }, [favorites]);
 
+  // Historial de búsquedas
   useEffect(() => {
-  if (debouncedSearch && debouncedSearch.length > 2) {
-    setSearchHistory(prev => {
-      const updated = [debouncedSearch, ...prev.filter(s => s !== debouncedSearch)];
-      return updated.slice(0, 5);
-    });
-  }
-}, [debouncedSearch]);
+    if (debouncedSearch && debouncedSearch.length > 2) {
+      setSearchHistory(prev => {
+        const updated = [debouncedSearch, ...prev.filter(s => s !== debouncedSearch)];
+        return updated.slice(0, 5);
+      });
+    }
+  }, [debouncedSearch]);
 
-useEffect(() => {
-  localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
-}, [searchHistory]);
+  useEffect(() => {
+    localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
+  }, [searchHistory]);
 
   // 3. Funciones
   const toggleFavorite = (id) => {
@@ -78,7 +93,7 @@ useEffect(() => {
     setSortConfig({ key, direction });
   };
 
-  // 4. useMemo (cálculos de variables)
+  // 4. Cálculos (useMemo)
   const filteredPlayers = useMemo(() => {
     let result = players;
     if (showOnlyFavorites) {
@@ -104,20 +119,18 @@ useEffect(() => {
     return sortableItems;
   }, [filteredPlayers, sortConfig]);
 
-  // Cálculos de Paginación (dependen de sortedPlayers)
+  // Paginación
   const totalPages = Math.ceil(sortedPlayers.length / itemsPerPage);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentPlayers = sortedPlayers.slice(indexOfFirstItem, indexOfLastItem);
 
-  // 5. Return (el HTML)
+  // 5. Render (HTML)
   return (
     <div className="app-container">
       <h1>🏀 Tabla de Jugadores de Baloncesto 🏀</h1>
       
-      <button onClick={() => setDarkMode(!darkMode)} style={{ marginBottom: '20px', padding: '8px 12px', cursor: 'pointer' }}>
-        {darkMode ? '☀️ Modo Claro' : '🌙 Modo Oscuro'}
-      </button>
+      <ThemeToggle darkMode={darkMode} onToggle={() => setDarkMode(!darkMode)} />
 
       <SearchBar 
         value={searchTerm}
@@ -127,11 +140,13 @@ useEffect(() => {
       />
 
       <SearchHistory 
-  history={searchHistory} 
-  onSelectSearch={setSearchTerm} 
-  onClearHistory={() => { setSearchHistory([]); localStorage.removeItem('searchHistory'); }} 
-/>
-<StatsPanel players={sortedPlayers} />
+        history={searchHistory} 
+        onSelectSearch={setSearchTerm} 
+        onClearHistory={() => { setSearchHistory([]); localStorage.removeItem('searchHistory'); }} 
+        darkMode={darkMode}
+      />
+      
+      <StatsPanel players={sortedPlayers} />
 
       <label style={{ display: 'block', marginBottom: '10px' }}>
         <input type="checkbox" checked={showOnlyFavorites} onChange={() => setShowOnlyFavorites(!showOnlyFavorites)} />
@@ -151,6 +166,7 @@ useEffect(() => {
         sortConfig={sortConfig} 
         favorites={favorites} 
         onToggleFavorite={toggleFavorite} 
+        onRowClick={setSelectedPlayer} 
       />
 
       {totalPages > 1 && (
@@ -158,6 +174,15 @@ useEffect(() => {
           currentPage={currentPage}
           totalPages={totalPages}
           onPageChange={setCurrentPage}
+        />
+      )}
+
+      {/* Modal de Detalles */}
+      {selectedPlayer && (
+        <Modal 
+          player={selectedPlayer} 
+          onClose={() => setSelectedPlayer(null)} 
+          darkMode={darkMode} 
         />
       )}
     </div>
