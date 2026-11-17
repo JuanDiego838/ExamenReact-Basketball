@@ -1,6 +1,6 @@
 import PlayerRow from './PlayerRow';
 
-function PlayerTable({ players, rowColors, onSort, sortConfig, favorites, onToggleFavorite }) {
+function PlayerTable({ players, rowColors, onSort, sortConfig, favorites, onToggleFavorite, onRowClick }) {
   const getSortIcon = (key) => {
     if (sortConfig.key !== key) return '↕';
     return sortConfig.direction === 'asc' ? '↑' : sortConfig.direction === 'desc' ? '↓' : '↕';
@@ -28,6 +28,7 @@ function PlayerTable({ players, rowColors, onSort, sortConfig, favorites, onTogg
             rowColors={rowColors} 
             isFavorite={favorites.includes(player.id)} 
             onToggleFavorite={onToggleFavorite} 
+            onClick={() => onRowClick && onRowClick(player)} // <--- LÍNEA AGREGADA
           />
         ))}
       </tbody>
