@@ -1,7 +1,7 @@
 function PlayerRow({ player, index, rowColors, isFavorite, onToggleFavorite }) {
   let bgColor = 'transparent';
-  if (rowColors === 'pares' && index % 2 === 0) bgColor = '#e3f2fd';
-  if (rowColors === 'impares' && index % 2 !== 0) bgColor = '#fff3e0';
+  if (rowColors === 'pares' && index % 2 === 0) bgColor = '#e3fde6';
+  if (rowColors === 'impares' && index % 2 !== 0) bgColor = '#ffe0e0';
 
   return (
     <tr className="player-row" style={{ backgroundColor: bgColor }}>

@@ -3,6 +3,8 @@ import { players } from './data/players.js';
 import SearchBar from './components/SearchBar';
 import PlayerTable from './components/PlayerTable';
 import Pagination from './components/Pagination';
+import SearchHistory from './components/SearchHistory';
+import StatsPanel from './components/StatsPanel';
 import './index.css';
 
 function App() {
@@ -31,6 +33,10 @@ function App() {
     return () => clearTimeout(timer);
   }, [searchTerm]);
 
+  const [searchHistory, setSearchHistory] = useState(() => {
+  return JSON.parse(localStorage.getItem('searchHistory')) || [];
+});
+
   useEffect(() => {
     setCurrentPage(1);
   }, [debouncedSearch, showOnlyFavorites]);
@@ -43,6 +49,19 @@ function App() {
   useEffect(() => {
     localStorage.setItem('favorites', JSON.stringify(favorites));
   }, [favorites]);
+
+  useEffect(() => {
+  if (debouncedSearch && debouncedSearch.length > 2) {
+    setSearchHistory(prev => {
+      const updated = [debouncedSearch, ...prev.filter(s => s !== debouncedSearch)];
+      return updated.slice(0, 5);
+    });
+  }
+}, [debouncedSearch]);
+
+useEffect(() => {
+  localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
+}, [searchHistory]);
 
   // 3. Funciones
   const toggleFavorite = (id) => {
@@ -106,6 +125,13 @@ function App() {
         onClear={() => setSearchTerm('')}
         resultsCount={sortedPlayers.length}
       />
+
+      <SearchHistory 
+  history={searchHistory} 
+  onSelectSearch={setSearchTerm} 
+  onClearHistory={() => { setSearchHistory([]); localStorage.removeItem('searchHistory'); }} 
+/>
+<StatsPanel players={sortedPlayers} />
 
       <label style={{ display: 'block', marginBottom: '10px' }}>
         <input type="checkbox" checked={showOnlyFavorites} onChange={() => setShowOnlyFavorites(!showOnlyFavorites)} />
