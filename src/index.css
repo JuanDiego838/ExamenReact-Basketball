@@ -4,6 +4,7 @@ body {
   padding: 20px;
   background-color: #f4f4f9;
   color: #333;
+  transition: background-color 0.4s ease, color 0.4s ease; /* Transición suave */
 }
 
 .app-container {
@@ -13,7 +14,10 @@ body {
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: background-color 0.4s ease;
 }
+
+/* --- MODO OSCURO --- */
 body.dark-mode {
   background-color: #121212;
   color: #ffffff;
@@ -38,11 +42,13 @@ body.dark-mode input {
   color: white;
   border: 1px solid #555;
 }
+
+/* --- BOTONES --- */
 button {
   padding: 8px 12px;
   border: none;
   border-radius: 5px;
-  background-color: #4CAF50; /* Verde bonito */
+  background-color: #4CAF50;
   color: white;
   cursor: pointer;
   transition: background-color 0.2s;
@@ -56,13 +62,22 @@ button:disabled {
   background-color: #cccccc;
   cursor: not-allowed;
 }
+
+/* --- TABLA --- */
 .player-table th, .player-table td {
   border-bottom: 1px solid #080707;
 }
+
 .player-row:hover {
-  background-color: #938e8e4f !important;
+  background-color: #e0e0e0 !important; /* Gris más oscuro para modo claro */
   transition: background-color 0.2s;
 }
+
+body.dark-mode .player-row:hover {
+  background-color: #444 !important; /* Gris oscuro para modo noche */
+}
+
+/* --- ANIMACIÓN MODAL --- */
 @keyframes fadeIn {
   from { opacity: 0; transform: scale(0.9); }
   to { opacity: 1; transform: scale(1); }
