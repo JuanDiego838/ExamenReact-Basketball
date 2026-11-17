@@ -146,7 +146,8 @@ function App() {
         darkMode={darkMode}
       />
       
-      <StatsPanel players={sortedPlayers} />
+      {/* Le pasamos darkMode a las estadísticas */}
+      <StatsPanel players={sortedPlayers} darkMode={darkMode} />
 
       <label style={{ display: 'block', marginBottom: '10px' }}>
         <input type="checkbox" checked={showOnlyFavorites} onChange={() => setShowOnlyFavorites(!showOnlyFavorites)} />
@@ -169,11 +170,13 @@ function App() {
         onRowClick={setSelectedPlayer} 
       />
 
+      {/* Le pasamos darkMode a la paginación */}
       {totalPages > 1 && (
         <Pagination 
           currentPage={currentPage}
           totalPages={totalPages}
           onPageChange={setCurrentPage}
+          darkMode={darkMode}
         />
       )}
 
