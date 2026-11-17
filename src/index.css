@@ -56,3 +56,6 @@ button:disabled {
   background-color: #cccccc;
   cursor: not-allowed;
 }
+.player-table th, .player-table td {
+  border-bottom: 1px solid #080707;
+}
