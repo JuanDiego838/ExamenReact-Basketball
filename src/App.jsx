@@ -113,7 +113,7 @@ useEffect(() => {
   // 5. Return (el HTML)
   return (
     <div className="app-container">
-      <h1>Examen React - Basketball 🏀</h1>
+      <h1>🏀 Tabla de Jugadores de Baloncesto 🏀</h1>
       
       <button onClick={() => setDarkMode(!darkMode)} style={{ marginBottom: '20px', padding: '8px 12px', cursor: 'pointer' }}>
         {darkMode ? '☀️ Modo Claro' : '🌙 Modo Oscuro'}
